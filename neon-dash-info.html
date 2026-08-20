@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEON DASH — Game Info</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cyan:   #00f5ff;
+    --pink:   #ff006e;
+    --yellow: #ffbe00;
+    --green:  #00ff88;
+    --dark:   #05050f;
+    --mid:    #0b0b1f;
+    --glow-c: 0 0 8px #00f5ff, 0 0 24px #00f5ff55;
+    --glow-p: 0 0 8px #ff006e, 0 0 24px #ff006e55;
+    --glow-y: 0 0 8px #ffbe00, 0 0 24px #ffbe0055;
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: #c8e8ef;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── Animated grid bg ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: bgScroll 12s linear infinite;
+    pointer-events: none; z-index: 0;
+  }
+  @keyframes bgScroll {
+    to { background-position: 0 50px, 50px 0; }
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 60px;
+    background: rgba(5,5,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,245,255,0.12);
+  }
+
+  .nav-logo {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 1.2rem;
+    letter-spacing: 0.3em;
+    color: var(--cyan);
+    text-shadow: var(--glow-c);
+    text-decoration: none;
+  }
+
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    color: rgba(0,245,255,0.55);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s, text-shadow 0.2s;
+  }
+  .nav-links a:hover { color: var(--cyan); text-shadow: var(--glow-c); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 120px 40px 80px;
+    overflow: hidden;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.35em;
+    color: rgba(0,245,255,0.45);
+    margin-bottom: 20px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(3rem, 10vw, 7rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0.15em;
+    color: var(--cyan);
+    text-shadow: var(--glow-c), 0 0 100px #00f5ff22;
+    animation: fadeUp 0.8s 0.15s ease both;
+    position: relative;
+  }
+
+  .hero-title span {
+    color: var(--pink);
+    text-shadow: var(--glow-p), 0 0 80px #ff006e22;
+  }
+
+  .hero-subtitle {
+    font-size: 1.3rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: rgba(200,232,239,0.6);
+    margin-top: 24px;
+    max-width: 540px;
+    line-height: 1.7;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  .hero-cta {
+    margin-top: 48px;
+    display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+    animation: fadeUp 0.8s 0.45s ease both;
+  }
+
+  .btn-play {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    padding: 16px 48px;
+    background: var(--cyan);
+    color: var(--dark);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+    box-shadow: 0 0 30px rgba(0,245,255,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-play:hover {
+    transform: scale(1.06);
+    box-shadow: 0 0 50px rgba(0,245,255,0.7);
+  }
+
+  .btn-outline {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    padding: 16px 36px;
+    background: transparent;
+    color: var(--cyan);
+    border: 1px solid rgba(0,245,255,0.4);
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s;
+  }
+  .btn-outline:hover {
+    background: rgba(0,245,255,0.08);
+    border-color: var(--cyan);
+    box-shadow: var(--glow-c);
+  }
+
+  /* Decorative corner brackets */
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 300px; height: 300px;
+    bottom: 80px; right: 80px;
+    border-right: 1px solid rgba(0,245,255,0.1);
+    border-bottom: 1px solid rgba(0,245,255,0.1);
+    pointer-events: none;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 200px; height: 200px;
+    top: 100px; left: 60px;
+    border-left: 1px solid rgba(255,0,110,0.12);
+    border-top: 1px solid rgba(255,0,110,0.12);
+    pointer-events: none;
+  }
+
+  /* Floating pixel art player preview */
+  .hero-canvas-wrap {
+    margin-top: 60px;
+    animation: fadeUp 0.8s 0.6s ease both, floatY 4s ease-in-out infinite;
+    position: relative;
+  }
+  @keyframes floatY {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  canvas.preview { display: block; }
+
+  /* ── SECTION BASE ── */
+  section {
+    position: relative; z-index: 1;
+    padding: 100px 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: rgba(0,245,255,0.35);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--cyan);
+    text-shadow: var(--glow-c);
+    margin-bottom: 40px;
+  }
+
+  /* ── FEATURES GRID ── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+  }
+
+  .feature-card {
+    background: rgba(0,245,255,0.04);
+    border: 1px solid rgba(0,245,255,0.12);
+    padding: 32px 28px;
+    position: relative;
+    transition: border-color 0.3s, background 0.3s;
+    cursor: default;
+    overflow: hidden;
+  }
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s;
+  }
+  .feature-card:hover { border-color: rgba(0,245,255,0.35); background: rgba(0,245,255,0.07); }
+  .feature-card:hover::before { transform: translateX(100%); }
+
+  .feature-icon {
+    font-size: 2.2rem;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .feature-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--cyan);
+    margin-bottom: 10px;
+  }
+  .feature-card p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(200,232,239,0.55);
+  }
+
+  /* ── LEVELS SECTION ── */
+  .levels-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .level-card {
+    border: 1px solid rgba(0,245,255,0.15);
+    padding: 30px 24px;
+    position: relative;
+    overflow: hidden;
+    background: rgba(5,5,20,0.6);
+  }
+
+  .level-card:nth-child(2) { border-color: rgba(255,190,0,0.2); }
+  .level-card:nth-child(3) { border-color: rgba(255,0,110,0.2); }
+
+  .level-num {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: rgba(0,245,255,0.08);
+    position: absolute;
+    top: 10px; right: 16px;
+    line-height: 1;
+  }
+  .level-card:nth-child(2) .level-num { color: rgba(255,190,0,0.08); }
+  .level-card:nth-child(3) .level-num { color: rgba(255,0,110,0.08); }
+
+  .level-badge {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    padding: 3px 10px;
+    margin-bottom: 16px;
+    display: inline-block;
+  }
+  .badge-easy   { border: 1px solid var(--cyan);   color: var(--cyan); }
+  .badge-medium { border: 1px solid var(--yellow);  color: var(--yellow); }
+  .badge-hard   { border: 1px solid var(--pink);    color: var(--pink); }
+
+  .level-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #dff;
+    margin-bottom: 10px;
+  }
+  .level-card p { font-size: 1rem; line-height: 1.65; color: rgba(200,232,239,0.5); }
+
+  .level-stats {
+    margin-top: 20px;
+    display: flex; gap: 20px;
+  }
+  .lstat {
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .lstat-label { font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em; color: rgba(200,232,239,0.3); }
+  .lstat-val   { font-family: 'Orbitron', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--cyan); }
+  .level-card:nth-child(2) .lstat-val { color: var(--yellow); }
+  .level-card:nth-child(3) .lstat-val { color: var(--pink); }
+
+  /* ── CONTROLS ── */
+  .controls-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .ctrl-item {
+    display: flex; align-items: center; gap: 16px;
+    padding: 20px;
+    background: rgba(0,245,255,0.03);
+    border: 1px solid rgba(0,245,255,0.1);
+  }
+
+  .key-badge {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    background: rgba(0,245,255,0.1);
+    border: 1px solid rgba(0,245,255,0.3);
+    color: var(--cyan);
+    padding: 6px 12px;
+    white-space: nowrap;
+    text-shadow: var(--glow-c);
+    flex-shrink: 0;
+  }
+
+  .ctrl-desc {
+    font-size: 0.95rem;
+    color: rgba(200,232,239,0.55);
+    line-height: 1.4;
+  }
+
+  /* ── SCORING ── */
+  .score-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+  }
+  .score-table th {
+    text-align: left;
+    padding: 12px 20px;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: rgba(0,245,255,0.4);
+    border-bottom: 1px solid rgba(0,245,255,0.12);
+  }
+  .score-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(0,245,255,0.07);
+    color: rgba(200,232,239,0.7);
+  }
+  .score-table tr:hover td { background: rgba(0,245,255,0.04); }
+  .pts { color: var(--yellow); text-shadow: var(--glow-y); font-weight: bold; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,245,255,0.15), transparent);
+    margin: 0 40px;
+    position: relative; z-index: 1;
+  }
+
+  /* ── CTA BAND ── */
+  .cta-band {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 100px 40px;
+    background: rgba(0,245,255,0.03);
+    border-top: 1px solid rgba(0,245,255,0.1);
+    border-bottom: 1px solid rgba(0,245,255,0.1);
+  }
+  .cta-band h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(1.8rem, 5vw, 3.5rem);
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    color: var(--cyan);
+    text-shadow: var(--glow-c);
+    margin-bottom: 16px;
+  }
+  .cta-band p {
+    font-size: 1.1rem;
+    color: rgba(200,232,239,0.5);
+    margin-bottom: 40px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 40px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    color: rgba(0,245,255,0.2);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    nav { padding: 14px 24px; }
+    .nav-links { gap: 20px; }
+    section { padding: 60px 24px; }
+    .levels-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">NEON DASH</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#levels">Levels</a></li>
+    <li><a href="#controls">Controls</a></li>
+    <li><a href="#scoring">Scoring</a></li>
+    <li><a href="platformer.html" style="color:var(--cyan);text-shadow:var(--glow-c)">▶ PLAY</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-eyebrow">// BROWSER PLATFORMER · HTML · CSS · JAVASCRIPT</p>
+  <h1 class="hero-title">NEON<br><span>DASH</span></h1>
+  <p class="hero-subtitle">
+    A high-speed cyberpunk platformer. Collect coins, stomp enemies, and race through glowing neon worlds to reach the portal.
+  </p>
+  <div class="hero-cta">
+    <a href="platformer.html" class="btn-play">▶ PLAY NOW</a>
+    <a href="#about" class="btn-outline">LEARN MORE</a>
+  </div>
+
+  <!-- Animated mini preview canvas -->
+  <div class="hero-canvas-wrap">
+    <canvas class="preview" id="preview" width="400" height="120"></canvas>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ABOUT / FEATURES -->
+<section id="about">
+  <p class="section-label">// 01 — ABOUT THE GAME</p>
+  <h2 class="section-title">WHAT IS NEON DASH?</h2>
+  <div class="features-grid reveal">
+    <div class="feature-card">
+      <span class="feature-icon">🎮</span>
+      <h3>FLUID PLATFORMING</h3>
+      <p>Tight, responsive controls with double-jump mechanics. Move, jump, and stomp your way through 3 handcrafted neon levels.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">⚡</span>
+      <h3>GLOWING VISUALS</h3>
+      <p>Every pixel pulses with neon light. Animated trail effects, particle explosions, and a scrolling cyberpunk cityscape backdrop.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">👾</span>
+      <h3>ENEMY AI</h3>
+      <p>Patrol enemies move dynamically across platforms. Land on top of them to stomp for bonus points — but one wrong move costs a life.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🏆</span>
+      <h3>HIGHSCORE SYSTEM</h3>
+      <p>Your top 5 scores are saved locally. Enter your name after each run and chase the top of the leaderboard.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🔮</span>
+      <h3>PORTAL SYSTEM</h3>
+      <p>The exit portal only activates once every coin is collected. Grab them all first — then race to the goal.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">💻</span>
+      <h3>PURE WEB TECH</h3>
+      <p>100% HTML, CSS, and JavaScript. No libraries, no frameworks, no installs. Open in any browser and play instantly.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- LEVELS -->
+<section id="levels">
+  <p class="section-label">// 02 — LEVELS</p>
+  <h2 class="section-title">3 WORLDS TO CONQUER</h2>
+  <div class="levels-row reveal">
+
+    <div class="level-card">
+      <div class="level-num">01</div>
+      <span class="level-badge badge-easy">EASY</span>
+      <h3>THE GRID</h3>
+      <p>Wide platforms, gentle jumps. Learn the ropes and build your rhythm before things get dangerous.</p>
+      <div class="level-stats">
+        <div class="lstat"><span class="lstat-label">COINS</span><span class="lstat-val">8</span></div>
+        <div class="lstat"><span class="lstat-label">ENEMIES</span><span class="lstat-val">2</span></div>
+        <div class="lstat"><span class="lstat-label">BONUS</span><span class="lstat-val">+500</span></div>
+      </div>
+    </div>
+
+    <div class="level-card">
+      <div class="level-num">02</div>
+      <span class="level-badge badge-medium">MEDIUM</span>
+      <h3>CIRCUIT RUSH</h3>
+      <p>Tighter gaps, moving platforms, and twice the enemies. Precision jumping becomes essential.</p>
+      <div class="level-stats">
+        <div class="lstat"><span class="lstat-label">COINS</span><span class="lstat-val">11</span></div>
+        <div class="lstat"><span class="lstat-label">ENEMIES</span><span class="lstat-val">4</span></div>
+        <div class="lstat"><span class="lstat-label">BONUS</span><span class="lstat-val">+500</span></div>
+      </div>
+    </div>
+
+    <div class="level-card">
+      <div class="level-num">03</div>
+      <span class="level-badge badge-hard">HARD</span>
+      <h3>OVERLOAD</h3>
+      <p>Staircase layouts, fast patrols, and a high portal. One slip and you're falling to the void.</p>
+      <div class="level-stats">
+        <div class="lstat"><span class="lstat-label">COINS</span><span class="lstat-val">11</span></div>
+        <div class="lstat"><span class="lstat-label">ENEMIES</span><span class="lstat-val">5</span></div>
+        <div class="lstat"><span class="lstat-label">BONUS</span><span class="lstat-val">+500</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTROLS -->
+<section id="controls">
+  <p class="section-label">// 03 — CONTROLS</p>
+  <h2 class="section-title">HOW TO PLAY</h2>
+  <div class="controls-grid reveal">
+    <div class="ctrl-item">
+      <span class="key-badge">← →</span>
+      <span class="ctrl-desc">Move left and right</span>
+    </div>
+    <div class="ctrl-item">
+      <span class="key-badge">A / D</span>
+      <span class="ctrl-desc">Alternate move keys</span>
+    </div>
+    <div class="ctrl-item">
+      <span class="key-badge">SPACE</span>
+      <span class="ctrl-desc">Jump / Double jump</span>
+    </div>
+    <div class="ctrl-item">
+      <span class="key-badge">↑ / W</span>
+      <span class="ctrl-desc">Alternate jump keys</span>
+    </div>
+    <div class="ctrl-item">
+      <span class="key-badge">STOMP ↓</span>
+      <span class="ctrl-desc">Land on enemy from above to defeat it</span>
+    </div>
+    <div class="ctrl-item">
+      <span class="key-badge">PORTAL</span>
+      <span class="ctrl-desc">Collect ALL coins first, then enter</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SCORING -->
+<section id="scoring">
+  <p class="section-label">// 04 — SCORING</p>
+  <h2 class="section-title">HOW POINTS WORK</h2>
+  <div class="reveal">
+    <table class="score-table">
+      <thead>
+        <tr>
+          <th>ACTION</th>
+          <th>POINTS</th>
+          <th>NOTES</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Collect a coin</td>
+          <td class="pts">+100</td>
+          <td>Each glowing coin on the map</td>
+        </tr>
+        <tr>
+          <td>Stomp an enemy</td>
+          <td class="pts">+200</td>
+          <td>Land directly on top from above</td>
+        </tr>
+        <tr>
+          <td>Complete a level</td>
+          <td class="pts">+500</td>
+          <td>Awarded when you pass through the portal</td>
+        </tr>
+        <tr>
+          <td>Clear all 3 levels</td>
+          <td class="pts">GLORY</td>
+          <td>Your name goes on the leaderboard</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top: 28px; padding: 20px 24px; border: 1px solid rgba(255,190,0,0.2); background: rgba(255,190,0,0.04);">
+      <p style="font-family:'Share Tech Mono',monospace; font-size:0.78rem; letter-spacing:0.12em; color:rgba(255,190,0,0.7); line-height:1.8;">
+        💡 TIP — The top 5 scores are saved automatically in your browser. After every run (win or lose), you can enter your name to claim your spot on the leaderboard.
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CTA BAND -->
+<div class="cta-band">
+  <h2>READY TO RUN?</h2>
+  <p>Open the game in your browser — no installs, no sign-up, just play.</p>
+  <a href="platformer.html" class="btn-play" style="font-size:1.1rem; padding:18px 60px;">▶ LAUNCH NEON DASH</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>NEON DASH &nbsp;·&nbsp; BUILT WITH HTML · CSS · JAVASCRIPT &nbsp;·&nbsp; 2025</p>
+</footer>
+
+<!-- Animated preview canvas script -->
+<script>
+  // ── Tiny looping preview animation ──
+  const pc = document.getElementById('preview');
+  const px = pc.getContext('2d');
+  let t = 0;
+
+  function drawPreview() {
+    px.clearRect(0, 0, 400, 120);
+
+    // BG
+    px.fillStyle = '#05050f';
+    px.fillRect(0, 0, 400, 120);
+
+    // Platforms
+    const plats = [{x:0,y:100,w:120},{x:140,y:80,w:80},{x:250,y:60,w:80},{x:350,y:40,w:50}];
+    for (const p of plats) {
+      px.save();
+      px.shadowBlur = 10; px.shadowColor = '#00f5ff';
+      px.strokeStyle = '#00f5ff'; px.lineWidth = 2;
+      px.beginPath(); px.moveTo(p.x, p.y); px.lineTo(p.x+p.w, p.y); px.stroke();
+      px.fillStyle = 'rgba(0,245,255,0.06)';
+      px.fillRect(p.x, p.y, p.w, 20);
+      px.restore();
+    }
+
+    // Coins (bobbing)
+    const coinPos = [{x:60,y:80},{x:175,y:60},{x:280,y:42},{x:368,y:22}];
+    for (const c of coinPos) {
+      const cy = c.y + Math.sin(t + c.x) * 3;
+      px.save();
+      px.shadowBlur = 12; px.shadowColor = '#ffbe00';
+      px.strokeStyle = '#ffbe00'; px.lineWidth = 1.5;
+      px.beginPath(); px.arc(c.x, cy, 5, 0, Math.PI*2); px.stroke();
+      px.fillStyle = 'rgba(255,190,0,0.2)'; px.fill();
+      px.restore();
+    }
+
+    // Player (running across platforms)
+    const prog  = (t * 0.4) % (Math.PI * 2);
+    const pIdx  = Math.floor((t * 0.4 / (Math.PI*2)) * plats.length) % plats.length;
+    const plat  = plats[Math.min(pIdx, plats.length-1)];
+    const px2   = plat.x + 20 + (Math.sin(t*0.4)*0.5+0.5) * (plat.w - 40);
+    const py2   = plat.y - 28;
+
+    // Trail
+    for (let i = 4; i > 0; i--) {
+      px.save();
+      px.globalAlpha = i * 0.04;
+      px.fillStyle = '#00f5ff';
+      px.fillRect(px2 - i*5 - 5, py2 + 8, 10, 20);
+      px.restore();
+    }
+
+    px.save();
+    px.shadowBlur = 16; px.shadowColor = '#00f5ff';
+    px.fillStyle = 'rgba(0,245,255,0.15)';
+    px.fillRect(px2-7, py2, 14, 24);
+    px.strokeStyle = '#00f5ff'; px.lineWidth = 1.5;
+    px.strokeRect(px2-7, py2, 14, 24);
+    // visor
+    px.fillStyle = '#00f5ff'; px.globalAlpha = 0.9;
+    px.fillRect(px2-3, py2+5, 9, 5);
+    px.restore();
+
+    // Enemy
+    const ex = 220 + Math.sin(t*0.7) * 20;
+    px.save();
+    px.shadowBlur = 10; px.shadowColor = '#ff006e';
+    px.fillStyle = 'rgba(255,0,110,0.15)';
+    px.fillRect(ex, 46, 18, 18);
+    px.strokeStyle = '#ff006e'; px.lineWidth = 1.2;
+    px.strokeRect(ex, 46, 18, 18);
+    px.fillStyle = '#ff006e';
+    px.beginPath(); px.arc(ex+5, ex > 220 ? 53 : 53, 2.5, 0, Math.PI*2); px.fill();
+    px.beginPath(); px.arc(ex+13, 53, 2.5, 0, Math.PI*2); px.fill();
+    px.restore();
+
+    t += 0.04;
+    requestAnimationFrame(drawPreview);
+  }
+  drawPreview();
+
+  // ── Scroll reveal ──
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => io.observe(r));
+</script>
+</body>
+</html>
